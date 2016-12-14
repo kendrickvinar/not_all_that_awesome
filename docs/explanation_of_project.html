@@ -11763,7 +11763,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Project-Walkthrough">Project Walkthrough<a class="anchor-link" href="#Project-Walkthrough">&#182;</a></h1><p>Below is a detailed examination of the process by which we created our models. The table of contents below can be used to navigate to a topic of interest.</p>
+<h1 id="Project-Walkthrough">Project Walkthrough<a class="anchor-link" href="#Project-Walkthrough">&#182;</a></h1><p>Below is a detailed examination of the process by which we created our models. The table of contents below can be used to navigate to a topic of interest. The table of contents is divided up into two portions roughly corresponding to the two separate files in which we performed this project. The data manipulation portion focuses on the acquisition and preparation of the data for the project. The data analysis portion focuses on the models and results.</p>
 <hr>
 
 </div>
@@ -11774,12 +11774,21 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<ul>
+<h3 id="Data-Manipulation">Data Manipulation<a class="anchor-link" href="#Data-Manipulation">&#182;</a></h3><ul>
+<li><a href="#overview">Overview</a></li>
 <li><a href="#data_sources">Data Sources</a></li>
 <li><a href="#data_cleaning">Data Cleaning</a></li>
 <li><a href="#variable_creation">Variable Creation/Selection</a></li>
 <li><a href="#2016_data">2016 Data Extraction</a></li>
 <li><a href="#preparation">Preparing the Data for Analysis</a></li>
+</ul>
+<h3 id="Data-Analysis">Data Analysis<a class="anchor-link" href="#Data-Analysis">&#182;</a></h3><ul>
+<li><a href="#overview_2">Overview</a></li>
+<li><a href="#goals">Goals</a></li>
+<li><a href="#functional">Functional Justification</a></li>
+<li><a href="#binomial">Binomial Sampling and the Case for Variance</a></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#exploration">Areas for Further Exploration</a></li>
 </ul>
 <p>Return back to the <a href="home_page.html">homepage</a>.</p>
 
@@ -11791,9 +11800,21 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Data-Manipulation">Data Manipulation<a class="anchor-link" href="#Data-Manipulation">&#182;</a></h1><hr>
+<p><a id = 'overview'></a></p>
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview">&#182;</a></h2><p>The intent of this portion of the project is to organize the data in a fashion such that it is ready to be used by the various machine learning algorithms we test. This includes importing the data, cleaning the data, creating variables, and reducing variables. All of that occurs here.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'data_sources'></a></p>
 <h2 id="Data-Sources">Data Sources<a class="anchor-link" href="#Data-Sources">&#182;</a></h2><p>We retrieved data from two sources: the <a href="https://www.kaggle.com/c/march-machine-learning-mania-2016">2016 Kaggle March Madness Learning Mania</a> competition and the <a href="http://www.kenpom.com">Pomeroy College Basketball Rankings</a>. The Kaggle dataset provided us with detailed information for each team’s regular season performance in addition to results from that year’s tournament. The Pomeroy rankings—or KenPom, as they are colloquially known— give additional advanced metrics for each team, including but not limited to offensive efficiency, defensive efficiency, and adjusted tempo.</p>
-<p>We imported nine CSV files from these sources, including information about seeding, and box scores of tournament and regular season games from 2003-2016</p>
+<p>We imported nine CSV files from these sources, including information about seeding, and box scores of tournament and regular season games from 2003-2016.</p>
 
 </div>
 </div>
@@ -11847,6 +11868,112 @@ div#notebook {
 <h2 id="Preparing-the-Data-for-Analysis">Preparing the Data for Analysis<a class="anchor-link" href="#Preparing-the-Data-for-Analysis">&#182;</a></h2>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Data-Analysis">Data Analysis<a class="anchor-link" href="#Data-Analysis">&#182;</a></h1><hr>
+<p><a id = 'overview_2'></a></p>
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'goals'></a></p>
+<h2 id="Goals">Goals<a class="anchor-link" href="#Goals">&#182;</a></h2><p>The goal of our model was to earn the highest possible score in the tournament bracket.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'functional'></a></p>
+<h2 id="Functional-Justification">Functional Justification<a class="anchor-link" href="#Functional-Justification">&#182;</a></h2><p>We attempted to write the majority of our code in functional form. This strategy is preferred for several reasons.</p>
+<p>First, many of the operations we wish to perform need to be repeated numerous times. For example, there are many times we wish to reindex a dataframe, clean a dataframe of faulty seedings, and more. Therefore, to save us from writing these lines of code over and over, we used functions.</p>
+<p>Second, many of the operations we perform are applied over different machine learning algorithms, different years of training data, and more. To maximize flexibility and ease of use, a functional was preferred.</p>
+<p>Last, a functional approach increased the interpretability of our code. Because we packaged our functions into specific tasks,  we were able to understand better what was happening in our code. As this was a partner project, this made working together as a team much easier.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'standard_model'></a></p>
+<h2 id="Standard-Model">Standard Model<a class="anchor-link" href="#Standard-Model">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'risk'></a></p>
+<h2 id="Risk">Risk<a class="anchor-link" href="#Risk">&#182;</a></h2><p>In our search for adding variance into our model, we created a risk parameter that defined the decision boundary for classifying a win. Our hope was that we would see more upsets in our model that would lead to increased variance in our predictions. Ideally, our average score would decrease slightly but our variance would increase such that we achieved, on occasion, high scores in the bracket.</p>
+<p>Normally, our decision boundary, or risk parameter, was 0.5. This meant that if our model predicted favorite had a better than 50% chance of winning the game, we would advance them to the next round. We tested how bracket results varied across different decision boundaries, using 0.4, 0.5, 0.6, and 0.7 as our different risk parameters.</p>
+<p>[need to say more here]</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'binomial'></a></p>
+<h2 id="Binomial-Sampling-and-the-Case-for-Variance">Binomial Sampling and the Case for Variance<a class="anchor-link" href="#Binomial-Sampling-and-the-Case-for-Variance">&#182;</a></h2><p>After creating our risk parameter, we pivoted towards a different method of adding randomness into our bracket predictions. The problem with the 'risk' parameter was that there really wasn't any addition of randomness, there was just a bias towards a larger number of upsets.</p>
+<p>Our solution to this was to fit a binomial distribution over the likelihood of the favorite advancing and vary the number of draws from the distribution. As the number of draws increases, the more the model comes to approximate our original model which advanced the team the model defined as better every time. For example, suppose our model says team 1 has a 60% chance of defeating team 2. In effect, the binomial distribution allows us to flip a weighted coin to decide who will advance. The weighted coin comes up 'advance' for the favorite 60% of the time and 'advance' for the underdodg 40% of the time. If we set the number of coin flips to one, the favorite advances 60% of the time, and the underdog advances 40% of the time.</p>
+<p>While we could have always used a single draw to determine who advances, we felt that a single draw might cost us tournament points in the long run. Why? Because we assume that the expected value of the favorite going forward in the tournament is greater than the expected value of the underdog going forward. For example, maybe an 8-seed gets hot for a game and knocks of a 1-seed. However, it seems likely that while the 8-seed may be better than the seed it received, there is also an element of luck involved in their win. Therefore, we don't expect them to continue winning many games further on into the tournament. In contrast, on average 1-seeds make much deeper tournament runs, accumulating more points.</p>
+<p>By taking more coin flips, say a best-of-3 or best-of-5 game, we bias the result towards the team we think has a better chance of winning. This makes sense intuitively. If you know you're going to win a coin flip for five dollars 90% of the time, you want to play that game as often as you can because you know you'll come out ahead. Even if you lose the first game, you'll keep playing. The binomial distribution is similar. By increasing the number of coin flips, it's akin to playing an imaginary best-of-3 or best-of-5 series for the right to advance to the next round.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'results'></a></p>
+<h2 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'exploration'></a></p>
+<h2 id="Areas-for-Further-Exploration">Areas for Further Exploration<a class="anchor-link" href="#Areas-for-Further-Exploration">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
