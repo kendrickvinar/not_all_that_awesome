@@ -11753,7 +11753,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="CS109A-Final-Project:-Data-Driven-March-Madness">CS109A Final Project: Data Driven March Madness<a class="anchor-link" href="#CS109A-Final-Project:-Data-Driven-March-Madness">&#182;</a></h1><p><strong>Harvard University</strong><br>
 <strong>Fall 2016</strong><br>
-<strong>Authors: Kurt Bullard and Kendrick Vinar</strong><br></p>
+<strong>Kurt Bullard and Kendrick Vinar</strong><br></p>
 
 </div>
 </div>
@@ -11902,10 +11902,9 @@ div#notebook {
 <p><a id = 'variable_creation'></a></p>
 <h2 id="Variable-Creation-and-Selection">Variable Creation and Selection<a class="anchor-link" href="#Variable-Creation-and-Selection">&#182;</a></h2><p>We created a variable for tournament seedings [1, 16] to normalize seed across regions. We did this by scraping the integers from the seed column that also referenced the region from which the bracket came.</p>
 <p>We created new variables with data given us from the Kaggle dataset that we felt would be better predictors. For example, we calculated predictors such as assist ratio, which is calculated as the number of assists in a game divided by the number of made field goals in a game. This predictor functions as a proxy for how team-oriented a team is or how reliant they are on star players. We created other variables in a similar fashion, including offensive and defensive rebound ratio, point differential, and the percentage of shots in the game that were two-point field goals and three-point field goals.</p>
-<p>We also created two variables to quantify performance against other teams in the NCAA tournament. One variable represents wins against other teams in the tournament and another variable represents losses against other teams in the tournament. For a team that beats a tournament ranked $n$ in the tournament, we gave them $1/n$ points. This system weights wins against highly-ranked teams in the tournament much more valuable than wins against lowly-ranked teams. This technique for predictor creation was shown to be effective by John Ezekowitz in his paper, [insert link].</p>
-<p>[kurt can you say more here about what happens next it’s getting pretty fuzzy for me here]</p>
-<p>Once we aggregated all the predictors together, we created a correlation matrix to determine which predictors were correlated with each other. We checked for multicollinearity with variance inflation factor (VIF) and eliminated variables. Below is a heat map visual of the correlation between variables before reducing with VIF. [kurt can you say more here?]</p>
-<p><img src="pics/all_predictors.png" alt=""></p>
+<p>We also created two variables to quantify performance against other teams in the NCAA tournament. One variable represents wins against other teams in the tournament and another variable represents losses against other teams in the tournament. For a team that beats a tournament ranked $n$ in the tournament, we gave them $1/n$ points. This system weights wins against highly-ranked teams in the tournament much more valuable than wins against lowly-ranked teams. This technique for predictor creation was shown to be effective by John Ezekowitz.</p>
+<p>Once we aggregated all the predictors together, we created a correlation matrix to determine which predictors were correlated with each other. We checked for multicollinearity with variance inflation factor (VIF) and eliminated variables. Below is a heat map visual of the correlation between variables before reducing with VIF. 
+<img src="https://github.com/kendrickvinar/not_all_that_awesome/blob/master/pics/all_predictors.png" alt=""></p>
 <p>Below is a second heat map that shows the correlation between variables after reducing with VIF.</p>
 <p><img src="pics/selected_predictors.png" alt=""></p>
 <p>[kurt can you also say something about the interaction terms]</p>
@@ -11968,8 +11967,6 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'tradeoffs'></a></p>
 <h2 id="Tradeoffs">Tradeoffs<a class="anchor-link" href="#Tradeoffs">&#182;</a></h2><p>One thing we noticed early on in the data analysis process was that there was going to be a tradeoff between the mean and variance of our scores. The NCAA selection committee does well with their seeding. When we always selected the team our model predicted would win, we would get very few upsets. The upsets we did get were usually 8-seed vs. 9-seed games, 7-seed vs. 10-seed games, or 4-seed vs. 5-seed games in the second round. Nothing very controversial. We could pick the "worse" team to win but that would come at a cost to the expected value of the bracket.</p>
-<p>However, what picking the "worse" team does is increase the variance of our results. Sometimes we were wrong when we picked the "worse" team, but sometimes we were right.</p>
-<p>[kurt I'm getting lost can you talk about this?]</p>
 
 </div>
 </div>
