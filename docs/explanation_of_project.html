@@ -11763,7 +11763,53 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Project-Walkthrough">Project Walkthrough<a class="anchor-link" href="#Project-Walkthrough">&#182;</a></h1><p>Below is a detailed examination of the process by which we created our models. The table of contents below can be used to navigate to a topic of interest. The table of contents is divided up into two portions roughly corresponding to the two separate files in which we performed this project. The data manipulation portion focuses on the acquisition and preparation of the data for the project. The data analysis portion focuses on the models and results.</p>
+<h1 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">&#182;</a></h1><hr>
+<ul>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="#Abstract">Abstract</a></li>
+<li><a href="#walkthrough">Project Walkthrough</a></li>
+<li><a href="#manipulation">Data Manipulation</a></li>
+<li><a href="#analysis">Data Analysis</a></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#exploration">Areas for Further Study</a></li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><hr>
+<p>March Madness is the colloquial phrase for the pinnacle event of college basketball, the NCAA Men's Basketball Tournament.  Each year in mid-March, sixty-four teams compete for the college basketball national championship. Unlike the NBA playoffs, in which teams play a best-of-seven series to advance, the national champion of college basketball is crowned via a single-elimination bracket. Hence, the madness -- a single loss can erase the significance of an excellent regular season for a favorite (see Kentucky in 2015), and a deep tournament run for an underdog can earn one a place in March Madness lore for years (see Davidson in 2008). What makes March Madness special is its unpredictability. Every year there are dramatic upsets and tournament runs. Despite millions of brackets submitted each year, there has never been a perfect bracket.</p>
+<p>Each year basketball experts, pundits, and casual fans alike fill out a bracket to predict who will win the 63 games each year. Theories and opinions on crafting the ideal bracket abound. Who do you listen to? We decided to put aside our theories and let the data speak.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Abstract">Abstract<a class="anchor-link" href="#Abstract">&#182;</a></h1><hr>
+<p>We created models to generate March Madness predictions using different machine learning algorithms, including logistic regression, SVM, and random forests. We analyzed data from 2003 through the 2016 season. We used a 7-year window time-series method to create seven years of predictions from 2010 to 2016. Each of those years of predictions are trained on seven years of prior tournament data. Three of those years, 2010-2012, we used to tune our models. We used the last four years from 2013-2016 to test the efficacy of our model. We evaluated the performance of our models with a common scoring system used by ESPN, Yahoo Sports, and CBS Sports. We found that we were unable to achieve very high scores in our model without introducing some element of randomness in our predictions. Therefore, our model generates probabilities for the likelihood of each team advancing in a given matchup, samples from a binomial distribution over the likelihood of the favorite winning, and advances the team that is most likely to advance according to the draw from the distribution. We tested our models using differing numbers of draws. Our results found that logistic regression outperformed random forests and support vector models.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'walkthrough'></a></p>
+<h1 id="Project-Walkthrough">Project Walkthrough<a class="anchor-link" href="#Project-Walkthrough">&#182;</a></h1><p>Below is a detailed examination of the process by which we created our models. It explains in much greater detail the individual steps of our project, justifications for our rationale, problems we encountered, and decisions we had to make. This portion is intended to be an accessible explanation of our process and reasoning. The table of contents below can be used to navigate to a topic of interest. The table of contents is divided up into two portions roughly corresponding to the two separate files in which we performed this project. The data manipulation portion focuses on the acquisition and preparation of the data for the project. The data analysis portion focuses on the models and results.</p>
+<p><Return back to the [homepage](home_page.html).></p>
 <hr>
 
 </div>
@@ -11776,21 +11822,25 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Data-Manipulation">Data Manipulation<a class="anchor-link" href="#Data-Manipulation">&#182;</a></h3><ul>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#Code">Code</a></li>
 <li><a href="#data_sources">Data Sources</a></li>
 <li><a href="#data_cleaning">Data Cleaning</a></li>
-<li><a href="#variable_creation">Variable Creation/Selection</a></li>
+<li><a href="#variable_creation">Variable Creation and Selection</a></li>
 <li><a href="#2016_data">2016 Data Extraction</a></li>
 <li><a href="#preparation">Preparing the Data for Analysis</a></li>
 </ul>
 <h3 id="Data-Analysis">Data Analysis<a class="anchor-link" href="#Data-Analysis">&#182;</a></h3><ul>
 <li><a href="#overview_2">Overview</a></li>
+<li><a href="#code_2">Code</a></li>
+<li><a href="#tradeoffs">Tradeoffs</a></li>
 <li><a href="#goals">Goals</a></li>
 <li><a href="#functional">Functional Justification</a></li>
+<li><a href="#scoring">Scoring</a></li>
+<li><a href="#tuning">Training and Tuning</a></li>
+<li><a href="#risk">Risk</a></li>
 <li><a href="#binomial">Binomial Sampling and the Case for Variance</a></li>
 <li><a href="#results">Results</a></li>
-<li><a href="#exploration">Areas for Further Exploration</a></li>
 </ul>
-<p>Return back to the <a href="home_page.html">homepage</a>.</p>
 
 </div>
 </div>
@@ -11800,9 +11850,21 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'manipulation'></a></p>
 <h1 id="Data-Manipulation">Data Manipulation<a class="anchor-link" href="#Data-Manipulation">&#182;</a></h1><hr>
 <p><a id = 'overview'></a></p>
 <h2 id="Overview">Overview<a class="anchor-link" href="#Overview">&#182;</a></h2><p>The intent of this portion of the project is to organize the data in a fashion such that it is ready to be used by the various machine learning algorithms we test. This includes importing the data, cleaning the data, creating variables, and reducing variables. All of that occurs here.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'Code'></a></p>
+<h2 id="Code">Code<a class="anchor-link" href="#Code">&#182;</a></h2><p>The code for this portion can be found <a href="data_manipulation_2.html">here</a>.</p>
 
 </div>
 </div>
@@ -11826,6 +11888,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'data_cleaning'></a></p>
 <h2 id="Data-Cleaning">Data Cleaning<a class="anchor-link" href="#Data-Cleaning">&#182;</a></h2><p>While sorting through the data, we realized we needed an easy way to distinguish between data for a Duke team that played in 2005 and a Duke team that played in 2010. For this, we created a unique ID for each team that would identify both the team and the year by combining the team name and the season in which it played.</p>
+<p>We also had to create a key that matched names from the Kaggle database and KenPom, since the names did not always match (for example, one might have been 'Michigan St.', the other 'Michigan State'). We did this to be able to eventually merge the KenPom database and the Kaggle data.</p>
 <p>We merged the KenPom data into the detailed tournament dataset by choosing the variables we wanted to consider for our model. These included rankings such as offensive and defensive efficiency, advanced metrics that were not included in the Kaggle data.</p>
 
 </div>
@@ -11841,7 +11904,10 @@ div#notebook {
 <p>We created new variables with data given us from the Kaggle dataset that we felt would be better predictors. For example, we calculated predictors such as assist ratio, which is calculated as the number of assists in a game divided by the number of made field goals in a game. This predictor functions as a proxy for how team-oriented a team is or how reliant they are on star players. We created other variables in a similar fashion, including offensive and defensive rebound ratio, point differential, and the percentage of shots in the game that were two-point field goals and three-point field goals.</p>
 <p>We also created two variables to quantify performance against other teams in the NCAA tournament. One variable represents wins against other teams in the tournament and another variable represents losses against other teams in the tournament. For a team that beats a tournament ranked $n$ in the tournament, we gave them $1/n$ points. This system weights wins against highly-ranked teams in the tournament much more valuable than wins against lowly-ranked teams. This technique for predictor creation was shown to be effective by John Ezekowitz in his paper, [insert link].</p>
 <p>[kurt can you say more here about what happens next it’s getting pretty fuzzy for me here]</p>
-<p>Once we aggregated all the predictors together, we created a correlation matrix to determine which predictors were correlated with each other. We checked for multicollinearity with variance inflation factor (VIF) and eliminated [kurt can you say more here?]</p>
+<p>Once we aggregated all the predictors together, we created a correlation matrix to determine which predictors were correlated with each other. We checked for multicollinearity with variance inflation factor (VIF) and eliminated variables. Below is a heat map visual of the correlation between variables before reducing with VIF. [kurt can you say more here?]</p>
+<p><img src="pics/all_predictors.png" alt=""></p>
+<p>Below is a second heat map that shows the correlation between variables after reducing with VIF.</p>
+<p><img src="pics/selected_predictors.png" alt=""></p>
 <p>[kurt can you also say something about the interaction terms]</p>
 <p>After selecting the desired variables, we created a new data frame to hold our selected predictors. We found that a lot of this data manipulation was very time intensive, so we chose to separate this into a distinct notebook that could be run only when changes were made. At the end of this notebook, we export a new CSV file that serves as the starting point for our data analysis in another notebook.</p>
 
@@ -11854,7 +11920,8 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = '2016_data'></a></p>
-<h2 id="2016-Data-Extraction">2016 Data Extraction<a class="anchor-link" href="#2016-Data-Extraction">&#182;</a></h2><p>[kurt, can you say something about the 2016 data and how that was different?]</p>
+<h2 id="2016-Data-Extraction">2016 Data Extraction<a class="anchor-link" href="#2016-Data-Extraction">&#182;</a></h2><p>Because the Kaggle competition data was put online for people to predict the 2016 tournament, the 2016 tournament games are not in the database. Because of this, we had to slightly alter our data gathering process for 2016 tournament teams.</p>
+<p>We used the tournament slots database to find which teams were in the tournament, and then compiled the 13 important variables for each team that we transferred to the data analysis notebook.</p>
 
 </div>
 </div>
@@ -11865,7 +11932,8 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'preparation'></a></p>
-<h2 id="Preparing-the-Data-for-Analysis">Preparing the Data for Analysis<a class="anchor-link" href="#Preparing-the-Data-for-Analysis">&#182;</a></h2>
+<h2 id="Preparing-the-Data-for-Analysis">Preparing the Data for Analysis<a class="anchor-link" href="#Preparing-the-Data-for-Analysis">&#182;</a></h2><p>We had to package our data such that it could be trained on for the desired seven year windows. We wrote several functions to expedite this process. One function allowed us to specify the years for which we wanted to get predictors and returns a subset of the larger prediction matrix for these years. Another that splits a prediction matrix into a response variable and the predictors. Another that resets the index, and another that cleans the prediction matrix. We used these functions to create our training and testing prediction matrices, then bundled them together in lists such that we could iterate over them when we wished to process the data together.</p>
+
 </div>
 </div>
 </div>
@@ -11874,9 +11942,35 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'analysis'></a></p>
 <h1 id="Data-Analysis">Data Analysis<a class="anchor-link" href="#Data-Analysis">&#182;</a></h1><hr>
 <p><a id = 'overview_2'></a></p>
-<h2 id="Overview">Overview<a class="anchor-link" href="#Overview">&#182;</a></h2>
+<h2 id="Overview">Overview<a class="anchor-link" href="#Overview">&#182;</a></h2><p>This portion deals primarily with tuning models, training models, and reporting results. Again, there are explanations of our process throughout, however greater technical proficiency is expected.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'code_2'></a></p>
+<h2 id="Code">Code<a class="anchor-link" href="#Code">&#182;</a></h2><p>The code for this portion can be found <a href="data_analysis_2.html">here</a>. We highly recommend a reading of this file.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'tradeoffs'></a></p>
+<h2 id="Tradeoffs">Tradeoffs<a class="anchor-link" href="#Tradeoffs">&#182;</a></h2><p>One thing we noticed early on in the data analysis process was that there was going to be a tradeoff between the mean and variance of our scores. The NCAA selection committee does well with their seeding. When we always selected the team our model predicted would win, we would get very few upsets. The upsets we did get were usually 8-seed vs. 9-seed games, 7-seed vs. 10-seed games, or 4-seed vs. 5-seed games in the second round. Nothing very controversial. We could pick the "worse" team to win but that would come at a cost to the expected value of the bracket.</p>
+<p>However, what picking the "worse" team does is increase the variance of our results. Sometimes we were wrong when we picked the "worse" team, but sometimes we were right.</p>
+<p>[kurt I'm getting lost can you talk about this?]</p>
+
 </div>
 </div>
 </div>
@@ -11886,7 +11980,11 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'goals'></a></p>
-<h2 id="Goals">Goals<a class="anchor-link" href="#Goals">&#182;</a></h2><p>The goal of our model was to earn the highest possible score in the tournament bracket.</p>
+<h2 id="Goals">Goals<a class="anchor-link" href="#Goals">&#182;</a></h2><p>Given the tradeoff between mean and variance above, the goal of our model was to give ourselves the best chance of scoring very highly in the tournament bracket. Our rationale is that most tournament brackets and pools reward only very high scoring brackets. Usually the winning bracket receives a sizeable prize while 2nd and 3rd usually receive little or nothing.
+A bracket that consistently performs above average but doesn't ever score above the 90th percentile is of little value.</p>
+<p>With that in mind, we sought models that would give us the best chance of doing really well, even if that meant that our model tanked some years. We emphasized these values in our tuning process when selecting model parameters.</p>
+<p>For example, if you play a winner-take-all pool with 30 participants with a 20 dollar buy-in, and your model is terrible nine times of out ten but wins once every ten years, your expected value for each year you play is a net gain of 40 dollars.</p>
+<p>Therefore, we are relatively unconcerned with the fact that our models perform poorly sometimes. We are more concerned with the upper-bound performance near the top 10% of brackets.</p>
 
 </div>
 </div>
@@ -11910,8 +12008,26 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a id = 'standard_model'></a></p>
-<h2 id="Standard-Model">Standard Model<a class="anchor-link" href="#Standard-Model">&#182;</a></h2>
+<p><a id = 'scoring'></a></p>
+<h2 id="Scoring">Scoring<a class="anchor-link" href="#Scoring">&#182;</a></h2><p>We evaluated the performance of our models with a common scoring system used by ESPN, Yahoo Sports, and CBS Sports. Under this system, one receives $2^{n-1}$ points for a correct prediction in the $n-th$ round. For example, one receives one point for a correct prediction in the 1st round, four points for a correct prediction in the 3rd round, and thirty-two points for correctly predicting the winner. According to this system, a perfect bracket will score 192 points. While there are other scoring systems used for March Madness, this system is the most common.</p>
+<p>Other scoring systems include adding the seed of your winner to the points for a given round. For example, if you correctly pick a 10-seed to beat a 7-seed in the first round, you get 1 + 10 = 11 points. This kind of scoring system massively changes the incentives of the bracket, and our model would not be appropriate for maximizing your score with this system. Adapting our model such that it can handle different scoring systems was not something that we were able to tackle during this project, however we believe this is an interesting area to extend our project in the future.</p>
+<p>Using ESPN's Tournament Challenge, we were able to record nationwide performance for the last two years. Unfortunately, they have closed the webpages for results before 2015.</p>
+<p>2015: Winner scored 183 points. 147 points is 99th percentile. 116 points is 90th percentile. 98 points is 75th percentile. 82 points is 50th percentile. 68 points is 25th percentile.</p>
+<p>2016: Winner scored 173 points. 123 points is 99th percentile. 92 points is 90th percentile. 81 points is 75th percentile. 67 points is 50th percentile. 56 points is 25th percentile.</p>
+<p>An interesting observation here is the variance in nationwide performance. Across the board, there is a dramatic decrease in scoring in each category from 2015 to 2016.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'tuning'></a></p>
+<h2 id="Training-and-Tuning">Training and Tuning<a class="anchor-link" href="#Training-and-Tuning">&#182;</a></h2><p>From our seven years on which we could predict, we chose to use the first three (2010, 2011, and 2012) to tune our model and the following four years to test our model (2013-2016). We tested several tuning parameters (10^-12 to 10^2) for logistic regression and SVM.</p>
+<p>We evaluated models by adding the scores of the 2010-2012 brackets for each parameter and summing them together, and taking the parameter with the maximum combined score. For the RF model, we did the same, except we varied max_depth and max_features instead of the tuning parameter.</p>
+
 </div>
 </div>
 </div>
@@ -11923,7 +12039,9 @@ div#notebook {
 <p><a id = 'risk'></a></p>
 <h2 id="Risk">Risk<a class="anchor-link" href="#Risk">&#182;</a></h2><p>In our search for adding variance into our model, we created a risk parameter that defined the decision boundary for classifying a win. Our hope was that we would see more upsets in our model that would lead to increased variance in our predictions. Ideally, our average score would decrease slightly but our variance would increase such that we achieved, on occasion, high scores in the bracket.</p>
 <p>Normally, our decision boundary, or risk parameter, was 0.5. This meant that if our model predicted favorite had a better than 50% chance of winning the game, we would advance them to the next round. We tested how bracket results varied across different decision boundaries, using 0.4, 0.5, 0.6, and 0.7 as our different risk parameters.</p>
-<p>[need to say more here]</p>
+<p>Below is a bracket from 2015 in which we set the risk parameter is 0.5.</p>
+<p><img src="pics/bracket_print.png" alt=""></p>
+<p>As you can see, using a risk parameter of 0.5 biases toward the favorite. This makes sense since the favorite is favored to win, and we won't predict many games when the underdog is favored to win.</p>
 
 </div>
 </div>
@@ -11937,7 +12055,12 @@ div#notebook {
 <h2 id="Binomial-Sampling-and-the-Case-for-Variance">Binomial Sampling and the Case for Variance<a class="anchor-link" href="#Binomial-Sampling-and-the-Case-for-Variance">&#182;</a></h2><p>After creating our risk parameter, we pivoted towards a different method of adding randomness into our bracket predictions. The problem with the 'risk' parameter was that there really wasn't any addition of randomness, there was just a bias towards a larger number of upsets.</p>
 <p>Our solution to this was to fit a binomial distribution over the likelihood of the favorite advancing and vary the number of draws from the distribution. As the number of draws increases, the more the model comes to approximate our original model which advanced the team the model defined as better every time. For example, suppose our model says team 1 has a 60% chance of defeating team 2. In effect, the binomial distribution allows us to flip a weighted coin to decide who will advance. The weighted coin comes up 'advance' for the favorite 60% of the time and 'advance' for the underdodg 40% of the time. If we set the number of coin flips to one, the favorite advances 60% of the time, and the underdog advances 40% of the time.</p>
 <p>While we could have always used a single draw to determine who advances, we felt that a single draw might cost us tournament points in the long run. Why? Because we assume that the expected value of the favorite going forward in the tournament is greater than the expected value of the underdog going forward. For example, maybe an 8-seed gets hot for a game and knocks of a 1-seed. However, it seems likely that while the 8-seed may be better than the seed it received, there is also an element of luck involved in their win. Therefore, we don't expect them to continue winning many games further on into the tournament. In contrast, on average 1-seeds make much deeper tournament runs, accumulating more points.</p>
-<p>By taking more coin flips, say a best-of-3 or best-of-5 game, we bias the result towards the team we think has a better chance of winning. This makes sense intuitively. If you know you're going to win a coin flip for five dollars 90% of the time, you want to play that game as often as you can because you know you'll come out ahead. Even if you lose the first game, you'll keep playing. The binomial distribution is similar. By increasing the number of coin flips, it's akin to playing an imaginary best-of-3 or best-of-5 series for the right to advance to the next round.</p>
+<p>By taking more coin flips, say a best-of-3 or best-of-5 game, we bias the result towards the team we think has a better chance of advancing further in the tournament. This makes sense intuitively. If you know you're going to win a coin flip for five dollars 90% of the time, you want to play that game as often as you can because you know you'll come out ahead. Even if you lose the first game, you'll keep playing. The binomial distribution is similar. By increasing the number of coin flips, it's akin to playing an imaginary best-of-3 or best-of-5 series for the right to advance to the next round.</p>
+<p>Below are summary statistics from test data in 2015 with a different number of coin flips. For each coin flip example, we ran 50 brackets. As the data shows, there is a tradeoff between the mean score and the variance of the flips. In order to score a very high bracket, it makes sense to only use a single flip because you maximize your variance, especially if you are competing in a large pool. However, there is a corresponding decrease in mean score. Therefore, if you are competing with only a few friends, it may make sense to use a greater number of coin flips to increase the mean score and decrease variance.</p>
+<p><img src="pics/df_w_results.png" alt=""></p>
+<p>The following graphs show the distribution of scores for each of the three models with one and three votes, respectively.</p>
+<p><img src="pics/result_graphs.png" alt=""></p>
+<p>As you can see, as the votes increase, the mean slightly increases but the variance decreases.</p>
 
 </div>
 </div>
@@ -11948,7 +12071,30 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'results'></a></p>
-<h2 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h2>
+<h1 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h1><hr>
+<p>In the end, we chose to go with a logistic regression model with a tuning parameter of C = 0.1. The averaged variable coefficients from the 2010-2015 models are displayed as follows:</p>
+<p><img src="pics/coefs.png" alt=""></p>
+<p>As is accepted in conventional wisdom, the general seed of a team and the team's offensive and defensive strength are strong predictors of a team's success in the tournament. The higher the underdog's seed or the lower the favorite's seed, the more likely it was the favorite won. The favorite's ability to hit the offensive glass was also a strong predictor of success—this could be because that stat encompasses other variables such as height and ability to draw big men away from the basket on offense. In addition, a team's ability to force teams to shoot threes also was a good sign of success. This suggest that teams with good interior defense do well in tournaments. An underdog's reliance on free-throws also was good for the favorite. This could be because underdogs no longer have that adavantage when they play better teams, unlike they did in the regular season if they played in weaker conferences.</p>
+<p>A favorite's tendency to turn the ball over was a strong predictor of failure. This makes sense, since an underdog naturally increases its chances of winning by increasing the amount of possessions it has.</p>
+<p>What we found interesting is that, in our model, the variable that weights a favorite's wins over other tournament teams in the regular season yielded a negative coefficient, suggesting that, holding everything else constant, a team does worse having beaten a strong slate of teams over the course of the season. We hypothesized that this is because teams who have beaten a lot of teams may be overseeded in the tournament, since the selection committe is prone to bias and could overweight "marquee wins" over the course of the season.</p>
+<p>In terms of variables that we included that did not seem significant, tempo and defensive rebounding ranked highest.</p>
+<p>Below are summary statistics describing our model performance for 2016. We ran 500 brackets for each model to create this histogram with one coin flip. The x-axis shows the score for each bracket, while the y-axis shows the number of brackets.</p>
+<p><img src="pics/2016_results.png" alt=""></p>
+<p><img src="pics/2016_results_1_flip.png" alt=""></p>
+<p>As seen in the graph, logistic regression performed best over SVM and random forest models. We weren't able to get a great model score, largely because Syracuse - a No. 10 seed - made the Final Four that year. Our model did not give Syracuse a high probability of making the Final Four, largely because it expected its path to the Final Four to be harder than it was. Traditionally, for a No. 10 seed to make the semifinals, you have to knock off a 7, 2, 3 and 1 seed. However, they got somewhat lucky with their path and faced a 7, 15, 11, and 1. So, even if you count a 10-over-7 as an upset (many don't), they only had to beat two favorites, one of which required a 15-point comeback in the final 10 minutes of the game, led largely by a 21-point second half performance by future first-round pick Malachi Richardson while guarded by ACC DPoY Malcolm Brogdon in a performance that we, even though one of us is a Syracuse fan, admit would very rarely be replicated in repeated games.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = 'summary'></a></p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><hr>
+<p>In conclusion, we've created a model by which you can predict the outcome of individual tournament games and, in doing so, can create a bracket. We also created a way to generate semi-random brackets to try to maximize the maximum score of your bracket. We found that in order to increase your chances of having an amazing bracket, you have to tolerate a decrease in the expected value of the model.</p>
+
 </div>
 </div>
 </div>
@@ -11958,22 +12104,34 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a id = 'exploration'></a></p>
-<h2 id="Areas-for-Further-Exploration">Areas for Further Exploration<a class="anchor-link" href="#Areas-for-Further-Exploration">&#182;</a></h2>
+<h1 id="Areas-for-Further-Exploration">Areas for Further Exploration<a class="anchor-link" href="#Areas-for-Further-Exploration">&#182;</a></h1><hr>
+<p>There are several directions that we would have liked to extend our project if we had the time. These are listed and described in greater detail below.</p>
+<ol>
+<li>Adapt model to handle multiple scoring systems</li>
+<li>Portfolio of brackets </li>
+<li>Account for point differential</li>
+<li>Explore further variable introduction and reduction</li>
+</ol>
+<p>First, we created a model that optimizes score based on a conventional scoring system that is consistent across top bracket competition sites, most notably the ESPN Bracket Challenge. One extension would be to change the model such that it could be easily optimized for different scoring systems.</p>
+<p>Second, an interesting extension would be to create a portfolio of brackets to optimize the maximum score from those brackets. Many bracket challenges and pools allow the submission of multiple entries. It would be fascinating to write a function that returned a portfolio of $n$ brackets that give the best chance of scoring as high as possible.</p>
+<p>Fourth, there were variables that we thought might contain predictive value that we did not have time or ability to include. Some of these include AP Preseason Poll Points, Vegas futures, and individual player statistics.</p>
+<p>We also considered including the quality of coaching and strength of conference, however <a href="http://harvardsportsanalysis.org/2016/03/for-coaches-previous-experience-in-march-madness-may-not-mean-much/">this article</a> and <a href="http://harvardsportsanalysis.org/2015/03/conference-bias-in-the-ncaa-tournament/">this article</a>, respectively, suggest there is little value in these predictors.</p>
+
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span> 
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a id = acknowledgements></a></p>
+<h1 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements">&#182;</a></h1><hr>
+<p>We would like to thank Michael Farrell, our project TF, for his advice, feedback, and availability throughout this process. His direction has been invaluable.</p>
+<p>We would also like to thank Kevin Rader, Pavlos Protopapas, and Weiwei Pan, the instructors of CS109a, for the time they have invested in our growth and learning throughout the semester. We are very grateful!</p>
 
 </div>
 </div>
-</div>
-
 </div>
     </div>
   </div>
