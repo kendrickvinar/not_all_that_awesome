@@ -11904,9 +11904,9 @@ div#notebook {
 <p>We created new variables with data given us from the Kaggle dataset that we felt would be better predictors. For example, we calculated predictors such as assist ratio, which is calculated as the number of assists in a game divided by the number of made field goals in a game. This predictor functions as a proxy for how team-oriented a team is or how reliant they are on star players. We created other variables in a similar fashion, including offensive and defensive rebound ratio, point differential, and the percentage of shots in the game that were two-point field goals and three-point field goals.</p>
 <p>We also created two variables to quantify performance against other teams in the NCAA tournament. One variable represents wins against other teams in the tournament and another variable represents losses against other teams in the tournament. For a team that beats a tournament ranked $n$ in the tournament, we gave them $1/n$ points. This system weights wins against highly-ranked teams in the tournament much more valuable than wins against lowly-ranked teams. This technique for predictor creation was shown to be effective by John Ezekowitz.</p>
 <p>Once we aggregated all the predictors together, we created a correlation matrix to determine which predictors were correlated with each other. We checked for multicollinearity with variance inflation factor (VIF) and eliminated variables. Below is a heat map visual of the correlation between variables before reducing with VIF.</p>
-<p><img src="https://github.com/kendrickvinar/not_all_that_awesome/blob/master/pics/all_predictors.png" alt=""></p>
+<p><img src="https://s29.postimg.org/o25qymdiv/all_predictors.png" alt="title"></p>
 <p>Below is a second heat map that shows the correlation between variables after reducing with VIF.</p>
-<p><img src="pics/selected_predictors.png" alt=""></p>
+<p><img src="https://s29.postimg.org/di0etryev/selected_predictors.png" alt=""></p>
 <p>After selecting the desired variables, we created a new data frame to hold our selected predictors. We found that a lot of this data manipulation was very time intensive, so we chose to separate this into a distinct notebook that could be run only when changes were made. At the end of this notebook, we export a new CSV file that serves as the starting point for our data analysis in another notebook.</p>
 
 </div>
@@ -12036,7 +12036,7 @@ A bracket that consistently performs above average but doesn't ever score above 
 <h2 id="Risk">Risk<a class="anchor-link" href="#Risk">&#182;</a></h2><p>In our search for adding variance into our model, we created a risk parameter that defined the decision boundary for classifying a win. Our hope was that we would see more upsets in our model that would lead to increased variance in our predictions. Ideally, our average score would decrease slightly but our variance would increase such that we achieved, on occasion, high scores in the bracket.</p>
 <p>Normally, our decision boundary, or risk parameter, was 0.5. This meant that if our model predicted favorite had a better than 50% chance of winning the game, we would advance them to the next round. We tested how bracket results varied across different decision boundaries, using 0.4, 0.5, 0.6, and 0.7 as our different risk parameters.</p>
 <p>Below is a bracket from 2015 in which we set the risk parameter is 0.5.</p>
-<p><img src="pics/bracket_print.png" alt=""></p>
+<p><img src="https://s29.postimg.org/murt6enef/bracket_print.png" alt=""></p>
 <p>As you can see, using a risk parameter of 0.5 biases toward the favorite. This makes sense since the favorite is favored to win, and we won't predict many games when the underdog is favored to win.</p>
 
 </div>
@@ -12053,9 +12053,9 @@ A bracket that consistently performs above average but doesn't ever score above 
 <p>While we could have always used a single draw to determine who advances, we felt that a single draw might cost us tournament points in the long run. Why? Because we assume that the expected value of the favorite going forward in the tournament is greater than the expected value of the underdog going forward. For example, maybe an 8-seed gets hot for a game and knocks of a 1-seed. However, it seems likely that while the 8-seed may be better than the seed it received, there is also an element of luck involved in their win. Therefore, we don't expect them to continue winning many games further on into the tournament. In contrast, on average 1-seeds make much deeper tournament runs, accumulating more points.</p>
 <p>By taking more coin flips, say a best-of-3 or best-of-5 game, we bias the result towards the team we think has a better chance of advancing further in the tournament. This makes sense intuitively. If you know you're going to win a coin flip for five dollars 90% of the time, you want to play that game as often as you can because you know you'll come out ahead. Even if you lose the first game, you'll keep playing. The binomial distribution is similar. By increasing the number of coin flips, it's akin to playing an imaginary best-of-3 or best-of-5 series for the right to advance to the next round.</p>
 <p>Below are summary statistics from test data in 2015 with a different number of coin flips. For each coin flip example, we ran 50 brackets. As the data shows, there is a tradeoff between the mean score and the variance of the flips. In order to score a very high bracket, it makes sense to only use a single flip because you maximize your variance, especially if you are competing in a large pool. However, there is a corresponding decrease in mean score. Therefore, if you are competing with only a few friends, it may make sense to use a greater number of coin flips to increase the mean score and decrease variance.</p>
-<p><img src="pics/df_w_results.png" alt=""></p>
+<p><img src="https://s29.postimg.org/5irgkytx3/df_w_results.png" alt=""></p>
 <p>The following graphs show the distribution of scores for each of the three models with one and three votes, respectively.</p>
-<p><img src="pics/result_graphs.png" alt=""></p>
+<p><img src="https://s29.postimg.org/ocd9hys53/result_graphs.png" alt=""></p>
 <p>As you can see, as the votes increase, the mean slightly increases but the variance decreases.</p>
 
 </div>
@@ -12069,14 +12069,14 @@ A bracket that consistently performs above average but doesn't ever score above 
 <p><a id = 'results'></a></p>
 <h1 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h1><hr>
 <p>In the end, we chose to go with a logistic regression model with a tuning parameter of C = 0.1. The averaged variable coefficients from the 2010-2015 models are displayed as follows:</p>
-<p><img src="pics/coefs.png" alt=""></p>
+<p><img src="https://s29.postimg.org/wlp4wdlvb/coefs.png" alt=""></p>
 <p>As is accepted in conventional wisdom, the general seed of a team and the team's offensive and defensive strength are strong predictors of a team's success in the tournament. The higher the underdog's seed or the lower the favorite's seed, the more likely it was the favorite won. The favorite's ability to hit the offensive glass was also a strong predictor of success—this could be because that stat encompasses other variables such as height and ability to draw big men away from the basket on offense. In addition, a team's ability to force teams to shoot threes also was a good sign of success. This suggest that teams with good interior defense do well in tournaments. An underdog's reliance on free-throws also was good for the favorite. This could be because underdogs no longer have that adavantage when they play better teams, unlike they did in the regular season if they played in weaker conferences.</p>
 <p>A favorite's tendency to turn the ball over was a strong predictor of failure. This makes sense, since an underdog naturally increases its chances of winning by increasing the amount of possessions it has.</p>
 <p>What we found interesting is that, in our model, the variable that weights a favorite's wins over other tournament teams in the regular season yielded a negative coefficient, suggesting that, holding everything else constant, a team does worse having beaten a strong slate of teams over the course of the season. We hypothesized that this is because teams who have beaten a lot of teams may be overseeded in the tournament, since the selection committe is prone to bias and could overweight "marquee wins" over the course of the season.</p>
 <p>In terms of variables that we included that did not seem significant, tempo and defensive rebounding ranked highest.</p>
 <p>Below are summary statistics describing our model performance for 2016. We ran 500 brackets for each model to create this histogram with one coin flip. The x-axis shows the score for each bracket, while the y-axis shows the number of brackets.</p>
-<p><img src="pics/2016_results.png" alt=""></p>
-<p><img src="pics/2016_results_1_flip.png" alt=""></p>
+<p><img src="https://s29.postimg.org/xgboietpz/2016_results.png" alt=""></p>
+<p><img src="https://s29.postimg.org/re41rx59z/2016_results_1_flip.png" alt=""></p>
 <p>As seen in the graph, logistic regression performed best over SVM and random forest models. We weren't able to get a great model score, largely because Syracuse - a No. 10 seed - made the Final Four that year. Our model did not give Syracuse a high probability of making the Final Four, largely because it expected its path to the Final Four to be harder than it was. Traditionally, for a No. 10 seed to make the semifinals, you have to knock off a 7, 2, 3 and 1 seed. However, they got somewhat lucky with their path and faced a 7, 15, 11, and 1. So, even if you count a 10-over-7 as an upset (many don't), they only had to beat two favorites, one of which required a 15-point comeback in the final 10 minutes of the game, led largely by a 21-point second half performance by future first-round pick Malachi Richardson while guarded by ACC DPoY Malcolm Brogdon in a performance that we, even though one of us is a Syracuse fan, admit would very rarely be replicated in repeated games.</p>
 
 </div>
